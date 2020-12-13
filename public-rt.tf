@@ -10,3 +10,9 @@ resource "aws_route_table" "public-rt" {
     Name = "Terraform-Public-RT"
   }
 }
+
+resource "aws_route_table_association" "pub_sub_association" {
+  count = length(local.az_names)
+  route_table_id = aws_route_table.public-rt.id
+  subnet_id = aws_subnet.public_subnet.*.id[count.index]
+}
